@@ -50,15 +50,27 @@ public class AStar {
     }
 
     /**
+     * 回溯法绘制路径
      * 在二维数组中绘制路径
+     * TODO 记录路线（上下左右）
+     * 路径是倒叙 并且应该去掉开头结尾的元素
      */
     private void drawPath(int[][] maps, Node end) {
         if (end == null || maps == null) return;
         System.out.println("总代价：" + end.G);
+        // 移动路线
+        List<locationInfo> list = new ArrayList<>();
         while (end != null) {
             locationInfo c = end.locationInfo;
+            list.add(c);
             maps[c.y][c.x] = PATH;
             end = end.parent;
+        }
+        // TODO List中的元素两两比较
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (i + 1 < list.size()){
+                System.out.println(CommentUtils.getDirectionByLocation(list.get(i), list.get(i + 1)));
+            }
         }
     }
 

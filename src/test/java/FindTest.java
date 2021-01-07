@@ -1,25 +1,31 @@
 import Utils.AStar;
 import Utils.CommentUtils;
+import constant.Constants;
 import pojo.MapInfo;
 import pojo.Node;
 import pojo.locationInfo;
 
-public class AStarTest {
+import java.util.List;
 
+/**
+ * 通过A*算法规划到达最近豆子的路线
+ */
+public class FindTest {
     public static void main(String[] args) {
+        // 地图
         int[] array = {
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, -4, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -4, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -31,7 +37,17 @@ public class AStarTest {
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         };
         int[][] maps = CommentUtils.switchArray(array, 21, 21);
-        MapInfo info = new MapInfo(maps, maps[0].length, maps.length, new Node(new locationInfo(5, 6)), new Node(13, 12));
+        printMap(maps);
+        // 我的位置
+        locationInfo myLocationInfo = new locationInfo(5, 6);
+        // 找到所有的小豆子的位置
+        List<locationInfo> SmallPacList = CommentUtils.FindPac(Constants.SMALLPAC, maps);
+        System.out.println("小豆子的位置：" + SmallPacList.toString());
+        // 找到距离自己最近的豆子
+        locationInfo targetLocationInfo = CommentUtils.FindNearestPac(myLocationInfo, SmallPacList);
+        System.out.println("最近的豆子的位置：" + targetLocationInfo);
+        // 规划路线
+        MapInfo info = new MapInfo(maps, maps[0].length, maps.length, new Node(myLocationInfo), new Node(targetLocationInfo));
         new AStar().start(info);
         printMap(maps);
     }
@@ -47,5 +63,4 @@ public class AStarTest {
             System.out.println();
         }
     }
-
 }

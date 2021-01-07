@@ -1,5 +1,6 @@
 package Utils;
 
+import constant.Constants;
 import pojo.locationInfo;
 
 import java.util.*;
@@ -108,4 +109,24 @@ public class CommentUtils {
         return resultlocationInfo;
     }
 
+    /**
+     * 通过XY轴的坐标来判断方向
+     *
+     * @param current 当前位置
+     * @param target  目标位置
+     * @return 上下左右
+     */
+    public static int getDirectionByLocation(locationInfo current, locationInfo target) {
+        if (current.getX() < target.getX()) {
+            return Constants.LEFT;
+        } else if (current.getX() > target.getX()) {
+            return Constants.RIGHT;
+        }
+        if (current.getY() < target.getY()) {
+            return Constants.UP;
+        } else if (current.getY() > target.getY()) {
+            return Constants.DOWN;
+        }
+        return Constants.STAY;
+    }
 }

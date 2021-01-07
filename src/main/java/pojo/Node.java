@@ -17,6 +17,10 @@ public class Node implements Comparable<Node> {
         this.locationInfo = new locationInfo(x, y);
     }
 
+    public Node(locationInfo locationInfo) {
+        this.locationInfo = locationInfo;
+    }
+
     public Node(locationInfo locationInfo, Node parent, int g, int h) {
         this.locationInfo = locationInfo;
         this.parent = parent;
