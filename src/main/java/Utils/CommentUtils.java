@@ -4,6 +4,9 @@ import pojo.Position;
 
 import java.util.*;
 
+import static java.util.Map.Entry.comparingByValue;
+import static java.util.stream.Collectors.toMap;
+
 /**
  * 共通方法类
  *
@@ -41,8 +44,8 @@ public class CommentUtils {
      * @return X，Y轴坐标
      */
     public static Position Find(int target, int[][] array) {
-        int row = (int) array.length;//行数
-        int col = (int) array[0].length;//列数
+        int row = array.length;//行数
+        int col = array[0].length;//列数
         int i = 0;
         int j = col - 1;
         while (i < row && j >= 0) {
@@ -65,8 +68,8 @@ public class CommentUtils {
      */
     public static List<Position> FindPac(int target, int[][] array) {
         List<Position> positionList = new ArrayList<>();
-        int row = (int) array.length;//行数
-        int col = (int) array[0].length;//列数
+        int row = array.length;//行数
+        int col = array[0].length;//列数
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (array[i][j] == target) positionList.add(new Position(i, j));
@@ -86,14 +89,22 @@ public class CommentUtils {
         Position resultPosition = new Position(0, 0);
         Map<Position, Integer> resultMap = new HashMap<>();
         int sum = 0;
-
-        for (Position p : positionList) {
-            sum += Math.abs(p.getX() - myPosition.getX());
-            sum += Math.abs(p.getY() - myPosition.getY());
-            resultMap.put(p, sum);
+        if (positionList != null) {
+            for (Position p : positionList) {
+                sum += Math.abs(p.getX() - myPosition.getX());
+                sum += Math.abs(p.getY() - myPosition.getY());
+                resultMap.put(p, sum);
+                sum = 0;
+            }
+            // 将HashMap按照距离排序
+            Map<Position, Integer> sorted = resultMap
+                    .entrySet()
+                    .stream()
+                    .sorted(comparingByValue())
+                    .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+            // 取出距离最短的对象位置
+            resultPosition = sorted.keySet().stream().findFirst().orElse(null);
         }
-        System.out.println(resultMap);
-        // TODO 将HashMap按照Sum排序 去除Sum最小的对象（距离最短）
         return resultPosition;
     }
 }

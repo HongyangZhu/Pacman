@@ -1,7 +1,6 @@
 import Utils.CommentUtils;
 import pojo.Position;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,7 +49,9 @@ public class FindPacTest {
         SmallPacList = CommentUtils.FindPac(Constants.SMALLPAC, array);
         System.out.println("小豆子的位置：" + SmallPacList.toString());
 
-        // TODO 找到距离自己最近的豆子
-        CommentUtils.FindNearestPac(myPosition,SmallPacList);
+        // 找到距离自己最近的豆子
+        Position result = CommentUtils.FindNearestPac(myPosition, SmallPacList);
+        System.out.println("最近的豆子的位置：" + result);
+
     }
 }
