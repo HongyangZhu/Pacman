@@ -3,7 +3,9 @@ import pojo.Node;
 
 public class ASearchTest {
     public static void main(String[] args) {
+        // 起点
         Node start = new Node(2, 1, 40, 0, null);
+        // 终点
         Node end = new Node(2, 5, 0, 0, null);
         // 绘制地图
         int[][] map = new int[9][9];

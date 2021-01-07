@@ -2,7 +2,9 @@ package Utils;
 
 import pojo.Position;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 共通方法类
@@ -54,5 +56,24 @@ public class CommentUtils {
                 j--;
         }
         return new Position(0, 0);
+    }
+
+    /**
+     * 寻找豆子的坐标列表
+     *
+     * @param target 豆子
+     * @param array  地图
+     * @return 豆子的坐标列表
+     */
+    public static List<Position> FindPac(int target, int[][] array) {
+        List<Position> positionList = new ArrayList<>();
+        int row = (int) array.length;//行数
+        int col = (int) array[0].length;//列数
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (array[i][j] == target) positionList.add(new Position(i, j));
+            }
+        }
+        return positionList;
     }
 }
