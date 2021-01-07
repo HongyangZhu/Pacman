@@ -1,3 +1,5 @@
+package constant;
+
 public class Constants {
     /**
      * 保持不动

@@ -1,5 +1,6 @@
 import Utils.CommentUtils;
-import pojo.Position;
+import constant.Constants;
+import pojo.locationInfo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,12 +37,12 @@ public class FindPacTest {
             System.out.println(Arrays.toString(i));
         }
         System.out.println("-----------------转化结束-----------------");
-        Position myPosition;
-        List<Position> SmallPacList;
-        List<Position> BigPacList;
+        locationInfo mylocationInfo;
+        List<locationInfo> SmallPacList;
+        List<locationInfo> BigPacList;
         // 找到自己的位置
-        myPosition = CommentUtils.Find(298, array);
-        System.out.println("自己的位置：" + myPosition);
+        mylocationInfo = CommentUtils.Find(298, array);
+        System.out.println("自己的位置：" + mylocationInfo);
         // 找到所有的大豆子的位置
         BigPacList = CommentUtils.FindPac(Constants.BIGPAC, array);
         System.out.println("大豆子的位置：" + BigPacList.toString());
@@ -50,7 +51,7 @@ public class FindPacTest {
         System.out.println("小豆子的位置：" + SmallPacList.toString());
 
         // 找到距离自己最近的豆子
-        Position result = CommentUtils.FindNearestPac(myPosition, SmallPacList);
+        locationInfo result = CommentUtils.FindNearestPac(mylocationInfo, SmallPacList);
         System.out.println("最近的豆子的位置：" + result);
 
     }

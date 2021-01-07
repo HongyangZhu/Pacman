@@ -1,3 +1,5 @@
+import constant.Constants;
+
 /**
  * Pacman
  * 1. 如果玩家执行异常，或超时，或撞到障碍物，该玩家判定为死亡

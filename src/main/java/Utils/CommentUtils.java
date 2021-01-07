@@ -1,6 +1,6 @@
 package Utils;
 
-import pojo.Position;
+import pojo.locationInfo;
 
 import java.util.*;
 
@@ -43,20 +43,20 @@ public class CommentUtils {
      * @param array  二维数组
      * @return X，Y轴坐标
      */
-    public static Position Find(int target, int[][] array) {
+    public static locationInfo Find(int target, int[][] array) {
         int row = array.length;//行数
         int col = array[0].length;//列数
         int i = 0;
         int j = col - 1;
         while (i < row && j >= 0) {
             if (array[i][j] == target)
-                return new Position(i, j);
+                return new locationInfo(j, i);
             else if (array[i][j] < target)
                 i++;
             else
                 j--;
         }
-        return new Position(0, 0);
+        return new locationInfo(0, 0);
     }
 
     /**
@@ -66,45 +66,46 @@ public class CommentUtils {
      * @param array  地图
      * @return 豆子的坐标列表
      */
-    public static List<Position> FindPac(int target, int[][] array) {
-        List<Position> positionList = new ArrayList<>();
+    public static List<locationInfo> FindPac(int target, int[][] array) {
+        List<locationInfo> locationInfoList = new ArrayList<>();
         int row = array.length;//行数
         int col = array[0].length;//列数
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if (array[i][j] == target) positionList.add(new Position(i, j));
+                if (array[i][j] == target) locationInfoList.add(new locationInfo(j, i));
             }
         }
-        return positionList;
+        return locationInfoList;
     }
 
     /**
      * 寻找离自己最近的豆子
      *
-     * @param myPosition   我的当前位置
-     * @param positionList 豆子的位置列表
+     * @param mylocationInfo   我的当前位置
+     * @param locationInfoList 豆子的位置列表
      * @return 最近的豆子位置
      */
-    public static Position FindNearestPac(Position myPosition, List<Position> positionList) {
-        Position resultPosition = new Position(0, 0);
-        Map<Position, Integer> resultMap = new HashMap<>();
+    public static locationInfo FindNearestPac(locationInfo mylocationInfo, List<locationInfo> locationInfoList) {
+        locationInfo resultlocationInfo = new locationInfo(0, 0);
+        Map<locationInfo, Integer> resultMap = new HashMap<>();
         int sum = 0;
-        if (positionList != null) {
-            for (Position p : positionList) {
-                sum += Math.abs(p.getX() - myPosition.getX());
-                sum += Math.abs(p.getY() - myPosition.getY());
+        if (locationInfoList != null) {
+            for (locationInfo p : locationInfoList) {
+                sum += Math.abs(p.getX() - mylocationInfo.getX());
+                sum += Math.abs(p.getY() - mylocationInfo.getY());
                 resultMap.put(p, sum);
                 sum = 0;
             }
             // 将HashMap按照距离排序
-            Map<Position, Integer> sorted = resultMap
+            Map<locationInfo, Integer> sorted = resultMap
                     .entrySet()
                     .stream()
                     .sorted(comparingByValue())
                     .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
             // 取出距离最短的对象位置
-            resultPosition = sorted.keySet().stream().findFirst().orElse(null);
+            resultlocationInfo = sorted.keySet().stream().findFirst().orElse(null);
         }
-        return resultPosition;
+        return resultlocationInfo;
     }
+
 }
