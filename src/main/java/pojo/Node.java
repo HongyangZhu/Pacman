@@ -1,3 +1,5 @@
+package pojo;
+
 /**
  * 节点链表类
  *
@@ -54,7 +56,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node [X=" + X + ", Y=" + Y + ", F=" + F + ", H=" + H + ", G=" + G + ", parent=" + parent
+        return "pojo.Node [X=" + X + ", Y=" + Y + ", F=" + F + ", H=" + H + ", G=" + G + ", parent=" + parent
                 + ", canSearch=" + canSearch + "]";
     }
 
