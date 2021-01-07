@@ -37,16 +37,20 @@ public class FindPacTest {
             System.out.println(Arrays.toString(i));
         }
         System.out.println("-----------------转化结束-----------------");
-        Position myPosition = new Position(0, 0);
-        List<Position> SmallPacList = new ArrayList<>();
+        Position myPosition;
+        List<Position> SmallPacList;
+        List<Position> BigPacList;
         // 找到自己的位置
         myPosition = CommentUtils.Find(298, array);
         System.out.println("自己的位置：" + myPosition);
+        // 找到所有的大豆子的位置
+        BigPacList = CommentUtils.FindPac(Constants.BIGPAC, array);
+        System.out.println("大豆子的位置：" + BigPacList.toString());
         // 找到所有的小豆子的位置
         SmallPacList = CommentUtils.FindPac(Constants.SMALLPAC, array);
         System.out.println("小豆子的位置：" + SmallPacList.toString());
 
-        // TODO 找到距离自己最近的小豆子
-
+        // TODO 找到距离自己最近的豆子
+        CommentUtils.FindNearestPac(myPosition,SmallPacList);
     }
 }

@@ -2,9 +2,7 @@ package Utils;
 
 import pojo.Position;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 共通方法类
@@ -75,5 +73,27 @@ public class CommentUtils {
             }
         }
         return positionList;
+    }
+
+    /**
+     * 寻找离自己最近的豆子
+     *
+     * @param myPosition   我的当前位置
+     * @param positionList 豆子的位置列表
+     * @return 最近的豆子位置
+     */
+    public static Position FindNearestPac(Position myPosition, List<Position> positionList) {
+        Position resultPosition = new Position(0, 0);
+        Map<Position, Integer> resultMap = new HashMap<>();
+        int sum = 0;
+
+        for (Position p : positionList) {
+            sum += Math.abs(p.getX() - myPosition.getX());
+            sum += Math.abs(p.getY() - myPosition.getY());
+            resultMap.put(p, sum);
+        }
+        System.out.println(resultMap);
+        // TODO 将HashMap按照Sum排序 去除Sum最小的对象（距离最短）
+        return resultPosition;
     }
 }
