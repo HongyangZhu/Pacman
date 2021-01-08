@@ -13,7 +13,12 @@ import java.util.*;
  * @Description: A星算法
  */
 public class AStar {
-    public final static int BAR = 1; // 障碍值
+    // 障碍值
+    public final static List<Integer> BAR = new ArrayList<Integer>() {{
+        add(-5);
+        add(-6);
+        add(-7);
+    }};
     public final static int PATH = 2; // 路径
     public final static int DIRECT_VALUE = 10; // 横竖移动代价
 //	public final static int OBLIQUE_VALUE = 14; // 斜移动代价
@@ -160,7 +165,7 @@ public class AStar {
         // 是否在地图中
         if (x < 0 || x >= mapInfo.width || y < 0 || y >= mapInfo.hight) return false;
         // 判断是否是不可通过的结点
-        if (mapInfo.maps[y][x] == BAR) return false;
+        if (BAR.contains(mapInfo.maps[y][x])) return false;
         // 判断结点是否存在close表
         if (isCoordInClose(x, y)) return false;
 

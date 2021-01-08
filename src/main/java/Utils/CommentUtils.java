@@ -80,6 +80,47 @@ public class CommentUtils {
     }
 
     /**
+     * 寻找所有玩家的坐标列表
+     *
+     * @param array 地图
+     * @return 所有玩家的坐标列表
+     */
+    public static List<locationInfo> FindPlayer(int[][] array) {
+        List<locationInfo> locationInfoList = new ArrayList<>();
+        int row = array.length;//行数
+        int col = array[0].length;//列数
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (array[i][j] >= 0) locationInfoList.add(new locationInfo(j, i));
+            }
+        }
+        return locationInfoList;
+    }
+
+    /**
+     * 计算自己到所有豆子的距离
+     * 计算豆子到所有玩家的距离
+     *
+     * @param mylocationInfo   我的当前位置
+     * @param locationInfoList 豆子的位置列表
+     * @return K：位置列表 V：距离
+     */
+    public static Map<locationInfo, Integer> getAllDistance(locationInfo mylocationInfo, List<locationInfo> locationInfoList) {
+        Map<locationInfo, Integer> resultMap = new HashMap<>();
+        int sum = 0;
+        if (locationInfoList != null) {
+            // 遍历豆子的位置列表 计算每个豆子到自己的距离
+            for (locationInfo p : locationInfoList) {
+                sum = 0;
+                sum += Math.abs(p.getX() - mylocationInfo.getX());
+                sum += Math.abs(p.getY() - mylocationInfo.getY());
+                resultMap.put(p, sum);
+            }
+        }
+        return resultMap;
+    }
+
+    /**
      * 寻找离自己最近的豆子
      *
      * @param mylocationInfo   我的当前位置
