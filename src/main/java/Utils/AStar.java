@@ -15,9 +15,12 @@ import java.util.*;
 public class AStar {
     // 障碍值
     public final static List<Integer> BAR = new ArrayList<Integer>() {{
+        // 障碍物
         add(-5);
         add(-6);
         add(-7);
+        // ghost
+        add(-1);
     }};
     public final static int PATH = 2; // 路径
     public final static int DIRECT_VALUE = 10; // 横竖移动代价
