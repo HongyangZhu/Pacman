@@ -7,6 +7,7 @@ import pojo.MapInfo;
 import pojo.Node;
 import pojo.locationInfo;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +37,15 @@ public class StrategyController {
      * 小豆子的位置
      */
     public List<locationInfo> SmallPacList;
-
     /**
-     * 所有玩家的位置
+     * 力量值比自己高的玩家的位置
      */
-    public List<locationInfo> playerList;
-
+    public List<locationInfo> powerHigherPlayerList = new ArrayList<>();
+    /**
+     * 所有玩家的情报
+     * K：位置 V：力量值
+     */
+    public Map<locationInfo, Integer> allPlayerMap;
 
     /**
      * 获取地图上的豆子情报
@@ -61,10 +65,23 @@ public class StrategyController {
      */
     public void getPlayerInformation(int[][] map) {
         // 找到所有玩家的位置
-        playerList = CommentUtils.FindPlayer(map);
-        // 移除自己的位置
-        playerList.remove(myLocationInfo);
-        System.out.println("其他玩家的位置：" + playerList.toString());
+        allPlayerMap = CommentUtils.FindPlayer(map);
+        // 我的力量值
+        int myPowerValue = 0;
+        for (Map.Entry<locationInfo, Integer> entry : allPlayerMap.entrySet()) {
+            if (entry.getKey() == myLocationInfo) {
+                myPowerValue = entry.getValue();
+            }
+        }
+        // 力量值比自己高的玩家的位置
+        for (Map.Entry<locationInfo, Integer> entry : allPlayerMap.entrySet()) {
+            if (entry.getValue() > myPowerValue) {
+                powerHigherPlayerList.add(entry.getKey());
+            }
+        }
+        System.out.println("所有玩家的情报：" + allPlayerMap.toString());
+        System.out.println("力量值比自己高的玩家的位置：" + powerHigherPlayerList.toString());
+
     }
 
 
@@ -91,20 +108,26 @@ public class StrategyController {
         // 找到距离自己最近的豆子
         locationInfo resultlocationInfo = null;
         // 按照距离排序后，遍历豆子的列表，避开其他玩家选择豆子
-        for (Map.Entry<locationInfo, Integer> entry : sortedPac.entrySet()) {
-            // 这个豆子到其他玩家的距离
-            Map<locationInfo, Integer> allPlayerDistance = CommentUtils.getAllDistance(entry.getKey(), playerList);
-            System.out.println("当前豆子到其他玩家的距离：" + allPlayerDistance);
-            for (Map.Entry<locationInfo, Integer> allPlayerEntry : allPlayerDistance.entrySet()) {
-                //当前豆子相比其他玩家来说，距离我最近时，结束循环。
-                if (entry.getValue() < allPlayerEntry.getValue()) {
-                    resultlocationInfo = entry.getKey();
+        if (powerHigherPlayerList.size() > 1) {
+            for (Map.Entry<locationInfo, Integer> entry : sortedPac.entrySet()) {
+                // 这个豆子到其他力量值比自己高的玩家的距离
+                Map<locationInfo, Integer> allPlayerDistance = CommentUtils.getAllDistance(entry.getKey(), powerHigherPlayerList);
+                System.out.println("当前豆子到其他玩家的距离：" + allPlayerDistance);
+                for (Map.Entry<locationInfo, Integer> allPlayerEntry : allPlayerDistance.entrySet()) {
+                    //当前豆子相比其他玩家来说，距离我最近时，结束循环。
+                    if (entry.getValue() < allPlayerEntry.getValue()) {
+                        resultlocationInfo = entry.getKey();
+                        break;
+                    }
+                }
+                if (resultlocationInfo != null) {
                     break;
                 }
             }
-            if (resultlocationInfo != null) {
-                break;
-            }
+        }
+        // 我当前的力量值场上最高时,无需考虑其他玩家
+        else {
+            resultlocationInfo = sortedPac.keySet().stream().findFirst().orElse(null);
         }
         //确实找到了一个豆子 相比其他玩家距离我最近时。
         if (resultlocationInfo != null) {

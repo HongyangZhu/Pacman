@@ -85,16 +85,18 @@ public class CommentUtils {
      * @param array 地图
      * @return 所有玩家的坐标列表
      */
-    public static List<locationInfo> FindPlayer(int[][] array) {
-        List<locationInfo> locationInfoList = new ArrayList<>();
+    public static Map<locationInfo, Integer> FindPlayer(int[][] array) {
+        Map<locationInfo, Integer> resultMap = new HashMap<>();
         int row = array.length;//行数
         int col = array[0].length;//列数
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if (array[i][j] >= 0) locationInfoList.add(new locationInfo(j, i));
+                if (array[i][j] >= 0) {
+                    resultMap.put(new locationInfo(j, i), array[i][j]);
+                }
             }
         }
-        return locationInfoList;
+        return resultMap;
     }
 
     /**
