@@ -50,7 +50,9 @@ public class FindTest {
         System.out.println("最近的豆子的位置：" + targetLocationInfo);
         // 规划路线
         MapInfo info = new MapInfo(maps, maps[0].length, maps.length, new Node(myLocationInfo), new Node(targetLocationInfo));
-        new AStar().start(info);
+        List<Integer> list = new AStar().start(info);
+        System.out.println("移动路线：" + list);
+        System.out.println("吃到豆子需要的回合数：" + list.size());
         System.out.println("-----------------------------路线图-----------------------------");
         printMap(maps);
         long time2 = System.currentTimeMillis();

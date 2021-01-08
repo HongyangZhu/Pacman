@@ -20,18 +20,20 @@ public class AStar {
 
     Queue<Node> openList = new PriorityQueue<Node>(); // 优先队列(升序)
     List<Node> closeList = new ArrayList<Node>();
+    List<Integer> pathList = new ArrayList<>();
 
     /**
      * 开始算法
      */
-    public void start(MapInfo mapInfo) {
-        if (mapInfo == null) return;
+    public List<Integer> start(MapInfo mapInfo) {
+        if (mapInfo == null) return pathList;
         // clean
         openList.clear();
         closeList.clear();
         // 开始搜索
         openList.add(mapInfo.start);
         moveNodes(mapInfo);
+        return pathList;
     }
 
     /**
@@ -57,20 +59,17 @@ public class AStar {
     private void drawPath(int[][] maps, Node end) {
         if (end == null || maps == null) return;
         System.out.println("总代价：" + end.G);
-        // 移动路线
-        List<Integer> list = new ArrayList<>();
         // 记录上次的位置
         locationInfo tmp = null;
         while (end != null) {
             locationInfo c = end.locationInfo;
-            if (tmp != null) list.add(CommentUtils.getDirectionByLocation(tmp, c));
+            if (tmp != null) pathList.add(CommentUtils.getDirectionByLocation(tmp, c));
             tmp = c;
             maps[c.y][c.x] = PATH;
             end = end.parent;
         }
         //因为是回溯法，所以需要颠倒顺序
-        Collections.reverse(list); // 倒序排列
-        System.out.println(list);
+        Collections.reverse(pathList); // 倒序排列
     }
 
     /**
