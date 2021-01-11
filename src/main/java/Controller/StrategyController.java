@@ -31,7 +31,7 @@ public class StrategyController {
     /**
      * 我的位置
      */
-    public locationInfo myLocationInfo = new locationInfo(6, 17);
+    public locationInfo myLocationInfo;
 
     /**
      * 大豆子的位置
@@ -51,6 +51,15 @@ public class StrategyController {
      * K：位置 V：力量值
      */
     public Map<locationInfo, Integer> allPlayerMap;
+
+    /**
+     * 我的位置初始化
+     *
+     * @param myLocationInfo 我的位置
+     */
+    public StrategyController(locationInfo myLocationInfo) {
+        this.myLocationInfo = myLocationInfo;
+    }
 
     /**
      * 获取地图上的豆子情报

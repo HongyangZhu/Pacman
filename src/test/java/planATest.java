@@ -1,5 +1,6 @@
 import Controller.StrategyController;
 import Utils.CommentUtils;
+import pojo.locationInfo;
 
 public class planATest {
     public static void main(String[] args) {
@@ -30,7 +31,7 @@ public class planATest {
         long time1 = System.currentTimeMillis();
         int[][] maps = CommentUtils.switchArray(array, 21, 21);
 
-        StrategyController controller = new StrategyController();
+        StrategyController controller = new StrategyController(new locationInfo(6,17));
         controller.planA(maps);
 
     }
