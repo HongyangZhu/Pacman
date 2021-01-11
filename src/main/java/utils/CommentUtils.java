@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import constant.Constants;
 import pojo.locationInfo;

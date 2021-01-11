@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import pojo.locationInfo;
 import pojo.MapInfo;
