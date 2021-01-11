@@ -1,5 +1,9 @@
 package constant;
 
+/**
+ * 共同定数
+ * @author zhuhy
+ */
 public class Constants {
     /**
      * 保持不动

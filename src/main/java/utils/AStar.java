@@ -26,8 +26,8 @@ public class AStar {
     public final static int DIRECT_VALUE = 10; // 横竖移动代价
 //	public final static int OBLIQUE_VALUE = 14; // 斜移动代价
 
-    Queue<Node> openList = new PriorityQueue<Node>(); // 优先队列(升序)
-    List<Node> closeList = new ArrayList<Node>();
+    Queue<Node> openList = new PriorityQueue<>(); // 优先队列(升序)
+    List<Node> closeList = new ArrayList<>();
     List<Integer> pathList = new ArrayList<>();
 
     /**
@@ -52,7 +52,7 @@ public class AStar {
             Node current = openList.poll();
             closeList.add(current);
             addNeighborNodeInOpen(mapInfo, current);
-            if (isCoordInClose(mapInfo.end.locationInfo)) {
+            if (isInClose(mapInfo.end.locationInfo)) {
                 drawPath(mapInfo.maps, mapInfo.end);
                 break;
             }
@@ -94,14 +94,7 @@ public class AStar {
         addNeighborNodeInOpen(mapInfo, current, x + 1, y, DIRECT_VALUE);
         // 下
         addNeighborNodeInOpen(mapInfo, current, x, y + 1, DIRECT_VALUE);
-//		// 左上
-//		addNeighborNodeInOpen(mapInfo,current, x - 1, y - 1, OBLIQUE_VALUE);
-//		// 右上
-//		addNeighborNodeInOpen(mapInfo,current, x + 1, y - 1, OBLIQUE_VALUE);
-//		// 右下
-//		addNeighborNodeInOpen(mapInfo,current, x + 1, y + 1, OBLIQUE_VALUE);
-//		// 左下
-//		addNeighborNodeInOpen(mapInfo,current, x - 1, y + 1, OBLIQUE_VALUE);
+
     }
 
     /**
@@ -158,7 +151,7 @@ public class AStar {
      * 判断结点是否是最终结点
      */
     private boolean isEndNode(LocationInfo end, LocationInfo locationInfo) {
-        return locationInfo != null && end.equals(locationInfo);
+        return end != null && end.equals(locationInfo);
     }
 
     /**
@@ -170,22 +163,20 @@ public class AStar {
         // 判断是否是不可通过的结点
         if (BAR.contains(mapInfo.maps[y][x])) return false;
         // 判断结点是否存在close表
-        if (isCoordInClose(x, y)) return false;
-
-        return true;
+        return !isInClose(x, y);
     }
 
     /**
      * 判断坐标是否在close表中
      */
-    private boolean isCoordInClose(LocationInfo locationInfo) {
-        return locationInfo != null && isCoordInClose(locationInfo.x, locationInfo.y);
+    private boolean isInClose(LocationInfo locationInfo) {
+        return locationInfo != null && isInClose(locationInfo.x, locationInfo.y);
     }
 
     /**
      * 判断坐标是否在close表中
      */
-    private boolean isCoordInClose(int x, int y) {
+    private boolean isInClose(int x, int y) {
         if (closeList.isEmpty()) return false;
         for (Node node : closeList) {
             if (node.locationInfo.x == x && node.locationInfo.y == y) {

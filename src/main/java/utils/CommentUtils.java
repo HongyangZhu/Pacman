@@ -18,23 +18,23 @@ public class CommentUtils {
     /**
      * 一维数组转化为二维数组
      *
-     * @param nums 一维数组
+     * @param array 一维数组
      * @param line 　行
      * @param row  列
      * @return 二维数组
      */
-    public static int[][] switchArray(int[] nums, int line, int row) {
-        int[][] numArray = new int[line][row];
-        int length = nums.length;
+    public static int[][] switchArray(int[] array, int line, int row) {
+        int[][] resultArray = new int[line][row];
+        int length = array.length;
         for (int index = 0; index < length; index++) {
-            int num = nums[index];
-            //一维数组nums中的第index个除三取余数为二维数组的行
+            int num = array[index];
+            //一维数组中的第index个除三取余数为二维数组的行
             int a = index / line;
-            //一维数组nums中的第index个除三取模为二维数组的列
+            //一维数组中的第index个除三取模为二维数组的列
             int b = index % row;
-            numArray[a][b] = num;
+            resultArray[a][b] = num;
         }
-        return numArray;
+        return resultArray;
     }
 
     /**
@@ -103,20 +103,20 @@ public class CommentUtils {
      * 计算自己到所有豆子的距离
      * 计算豆子到所有玩家的距离
      *
-     * @param mylocationInfo   我的当前位置
+     * @param myLocationInfo   我的当前位置
      * @param locationInfoList 豆子的位置列表
      * @return K：位置列表 V：距离
      */
-    public static Map<LocationInfo, Integer> getAllDistance(LocationInfo mylocationInfo, List<LocationInfo> locationInfoList) {
+    public static Map<LocationInfo, Integer> getAllDistance(LocationInfo myLocationInfo, List<LocationInfo> locationInfoList) {
         Map<LocationInfo, Integer> resultMap = new HashMap<>();
-        int sum = 0;
+        int sumDistance;
         if (locationInfoList != null) {
             // 遍历豆子的位置列表 计算每个豆子到自己的距离
-            for (LocationInfo p : locationInfoList) {
-                sum = 0;
-                sum += Math.abs(p.getX() - mylocationInfo.getX());
-                sum += Math.abs(p.getY() - mylocationInfo.getY());
-                resultMap.put(p, sum);
+            for (LocationInfo l : locationInfoList) {
+                sumDistance = 0;
+                sumDistance += Math.abs(l.getX() - myLocationInfo.getX());
+                sumDistance += Math.abs(l.getY() - myLocationInfo.getY());
+                resultMap.put(l, sumDistance);
             }
         }
         return resultMap;
@@ -125,18 +125,18 @@ public class CommentUtils {
     /**
      * 寻找离自己最近的豆子
      *
-     * @param mylocationInfo   我的当前位置
-     * @param locationInfoList 豆子的位置列表
+     * @param myLocationInfo   我的当前位置
+     * @param pacLocationInfoList 豆子的位置列表
      * @return 最近的豆子位置
      */
-    public static LocationInfo FindNearestPac(LocationInfo mylocationInfo, List<LocationInfo> locationInfoList) {
-        LocationInfo resultlocationInfo = new LocationInfo(0, 0);
+    public static LocationInfo FindNearestPac(LocationInfo myLocationInfo, List<LocationInfo> pacLocationInfoList) {
+        LocationInfo resultLocationInfo = new LocationInfo(0, 0);
         Map<LocationInfo, Integer> resultMap = new HashMap<>();
         int sum = 0;
-        if (locationInfoList != null) {
-            for (LocationInfo p : locationInfoList) {
-                sum += Math.abs(p.getX() - mylocationInfo.getX());
-                sum += Math.abs(p.getY() - mylocationInfo.getY());
+        if (pacLocationInfoList != null) {
+            for (LocationInfo p : pacLocationInfoList) {
+                sum += Math.abs(p.getX() - myLocationInfo.getX());
+                sum += Math.abs(p.getY() - myLocationInfo.getY());
                 resultMap.put(p, sum);
                 sum = 0;
             }
@@ -147,9 +147,9 @@ public class CommentUtils {
                     .sorted(comparingByValue())
                     .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
             // 取出距离最短的对象位置
-            resultlocationInfo = sorted.keySet().stream().findFirst().orElse(null);
+            resultLocationInfo = sorted.keySet().stream().findFirst().orElse(null);
         }
-        return resultlocationInfo;
+        return resultLocationInfo;
     }
 
     /**
