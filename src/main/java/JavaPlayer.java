@@ -1,4 +1,5 @@
 import constant.Constants;
+import pojo.locationInfo;
 
 /**
  * Pacman
@@ -16,7 +17,7 @@ public class JavaPlayer {
     /**
      * 选手的初始位置
      */
-    public int position;
+    public locationInfo locationInfo;
     /**
      * 每回合执行的时间约束，单位毫秒
      */
@@ -29,7 +30,7 @@ public class JavaPlayer {
      * @throws Exception
      */
     public void ready(int position, int timeLimit) throws Exception {
-        this.position = position;
+        this.locationInfo = new locationInfo(position / 21, position % 21);
         this.timeLimit = timeLimit;
     }
 
