@@ -8,20 +8,20 @@ package pojo;
  */
 public class Node implements Comparable<Node> {
 
-    public locationInfo locationInfo; // 坐标
+    public LocationInfo locationInfo; // 坐标
     public Node parent; // 父结点
     public int G; // G：是个准确的值，是起点到当前结点的代价
     public int H; // H：是个估值，当前结点到目的结点的估计代价
 
     public Node(int x, int y) {
-        this.locationInfo = new locationInfo(x, y);
+        this.locationInfo = new LocationInfo(x, y);
     }
 
-    public Node(locationInfo locationInfo) {
+    public Node(LocationInfo locationInfo) {
         this.locationInfo = locationInfo;
     }
 
-    public Node(locationInfo locationInfo, Node parent, int g, int h) {
+    public Node(LocationInfo locationInfo, Node parent, int g, int h) {
         this.locationInfo = locationInfo;
         this.parent = parent;
         G = g;

@@ -2,7 +2,7 @@ import utils.AStar;
 import utils.CommentUtils;
 import pojo.MapInfo;
 import pojo.Node;
-import pojo.locationInfo;
+import pojo.LocationInfo;
 
 public class AStarTest {
 
@@ -31,7 +31,7 @@ public class AStarTest {
                 -2, -2, -5, -5, -5, -2, -5, -5, -5, -2, -2, -2, -5, -5, -5, -2, -5, -5, -5, -2, -2
         };
         int[][] maps = CommentUtils.switchArray(array, 21, 21);
-        MapInfo info = new MapInfo(maps, maps[0].length, maps.length, new Node(new locationInfo(5, 6)), new Node(13, 12));
+        MapInfo info = new MapInfo(maps, maps[0].length, maps.length, new Node(new LocationInfo(5, 6)), new Node(13, 12));
         new AStar().start(info);
         printMap(maps);
     }

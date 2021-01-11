@@ -7,12 +7,12 @@ package pojo;
  * @author zhuhy
  * @Description: 位置信息
  */
-public class locationInfo {
+public class LocationInfo {
 
     public int x;
     public int y;
 
-    public locationInfo(int x, int y) {
+    public LocationInfo(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -36,8 +36,8 @@ public class locationInfo {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
-        if (obj instanceof locationInfo) {
-            locationInfo c = (locationInfo) obj;
+        if (obj instanceof LocationInfo) {
+            LocationInfo c = (LocationInfo) obj;
             return x == c.x && y == c.y;
         }
         return false;

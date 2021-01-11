@@ -1,6 +1,6 @@
 package utils;
 
-import pojo.locationInfo;
+import pojo.LocationInfo;
 import pojo.MapInfo;
 import pojo.Node;
 
@@ -68,9 +68,9 @@ public class AStar {
         if (end == null || maps == null) return;
         System.out.println("总代价：" + end.G);
         // 记录上次的位置
-        locationInfo tmp = null;
+        LocationInfo tmp = null;
         while (end != null) {
-            locationInfo c = end.locationInfo;
+            LocationInfo c = end.locationInfo;
             if (tmp != null) pathList.add(CommentUtils.getDirectionByLocation(tmp, c));
             tmp = c;
             maps[c.y][c.x] = PATH;
@@ -110,7 +110,7 @@ public class AStar {
     private void addNeighborNodeInOpen(MapInfo mapInfo, Node current, int x, int y, int value) {
         if (canAddNodeToOpen(mapInfo, x, y)) {
             Node end = mapInfo.end;
-            locationInfo locationInfo = new locationInfo(x, y);
+            LocationInfo locationInfo = new LocationInfo(x, y);
             int G = current.G + value; // 计算邻结点的G值
             Node child = findNodeInOpen(locationInfo);
             if (child == null) {
@@ -135,7 +135,7 @@ public class AStar {
     /**
      * 从Open列表中查找结点
      */
-    private Node findNodeInOpen(locationInfo locationInfo) {
+    private Node findNodeInOpen(LocationInfo locationInfo) {
         if (locationInfo == null || openList.isEmpty()) return null;
         for (Node node : openList) {
             if (node.locationInfo.equals(locationInfo)) {
@@ -149,7 +149,7 @@ public class AStar {
     /**
      * 计算H的估值：“曼哈顿”法，坐标分别取差值相加
      */
-    private int calcH(locationInfo end, locationInfo locationInfo) {
+    private int calcH(LocationInfo end, LocationInfo locationInfo) {
         return Math.abs(end.x - locationInfo.x)
                 + Math.abs(end.y - locationInfo.y);
     }
@@ -157,7 +157,7 @@ public class AStar {
     /**
      * 判断结点是否是最终结点
      */
-    private boolean isEndNode(locationInfo end, locationInfo locationInfo) {
+    private boolean isEndNode(LocationInfo end, LocationInfo locationInfo) {
         return locationInfo != null && end.equals(locationInfo);
     }
 
@@ -178,7 +178,7 @@ public class AStar {
     /**
      * 判断坐标是否在close表中
      */
-    private boolean isCoordInClose(locationInfo locationInfo) {
+    private boolean isCoordInClose(LocationInfo locationInfo) {
         return locationInfo != null && isCoordInClose(locationInfo.x, locationInfo.y);
     }
 

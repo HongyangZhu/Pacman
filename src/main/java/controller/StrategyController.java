@@ -5,7 +5,7 @@ import utils.CommentUtils;
 import constant.Constants;
 import pojo.MapInfo;
 import pojo.Node;
-import pojo.locationInfo;
+import pojo.LocationInfo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -31,33 +31,33 @@ public class StrategyController {
     /**
      * 我的位置
      */
-    public locationInfo myLocationInfo;
+    public LocationInfo myLocationInfo;
 
     /**
      * 大豆子的位置
      */
-    public List<locationInfo> BigPacList;
+    public List<LocationInfo> bigPacList;
 
     /**
      * 小豆子的位置
      */
-    public List<locationInfo> SmallPacList;
+    public List<LocationInfo> smallPacList;
     /**
      * 力量值比自己高的玩家的位置
      */
-    public List<locationInfo> powerHigherPlayerList = new ArrayList<>();
+    public List<LocationInfo> powerHigherPlayerList = new ArrayList<>();
     /**
      * 所有玩家的情报
      * K：位置 V：力量值
      */
-    public Map<locationInfo, Integer> allPlayerMap;
+    public Map<LocationInfo, Integer> allPlayerMap;
 
     /**
      * 我的位置初始化
      *
      * @param myLocationInfo 我的位置
      */
-    public StrategyController(locationInfo myLocationInfo) {
+    public StrategyController(LocationInfo myLocationInfo) {
         this.myLocationInfo = myLocationInfo;
     }
 
@@ -68,10 +68,10 @@ public class StrategyController {
      */
     public void getPacInformation(int[][] map) {
         // 找到所有的小豆子的位置
-        SmallPacList = CommentUtils.FindPac(Constants.SMALLPAC, map);
-        System.out.println("所有小豆子的位置：" + SmallPacList.toString());
-        BigPacList = CommentUtils.FindPac(Constants.BIGPAC, map);
-        System.out.println("所有大豆子的位置：" + BigPacList.toString());
+        smallPacList = CommentUtils.FindPac(Constants.SMALLPAC, map);
+        System.out.println("所有小豆子的位置：" + smallPacList.toString());
+        bigPacList = CommentUtils.FindPac(Constants.BIGPAC, map);
+        System.out.println("所有大豆子的位置：" + bigPacList.toString());
     }
 
     /**
@@ -84,13 +84,13 @@ public class StrategyController {
         allPlayerMap = CommentUtils.FindPlayer(map);
         // 我的力量值
         int myPowerValue = 0;
-        for (Map.Entry<locationInfo, Integer> entry : allPlayerMap.entrySet()) {
+        for (Map.Entry<LocationInfo, Integer> entry : allPlayerMap.entrySet()) {
             if (entry.getKey() == myLocationInfo) {
                 myPowerValue = entry.getValue();
             }
         }
         // 力量值比自己高的玩家的位置
-        for (Map.Entry<locationInfo, Integer> entry : allPlayerMap.entrySet()) {
+        for (Map.Entry<LocationInfo, Integer> entry : allPlayerMap.entrySet()) {
             if (entry.getValue() > myPowerValue) {
                 powerHigherPlayerList.add(entry.getKey());
             }
@@ -106,23 +106,23 @@ public class StrategyController {
      * @param allPacDistance 所有豆子的位置
      * @return 最有可能吃到的豆子的位置
      */
-    public locationInfo getMostPossiblePacLocation(Map<locationInfo, Integer> allPacDistance) {
+    public LocationInfo getMostPossiblePacLocation(Map<LocationInfo, Integer> allPacDistance) {
         // 将HashMap按照距离排序
-        Map<locationInfo, Integer> sortedPac = allPacDistance
+        Map<LocationInfo, Integer> sortedPac = allPacDistance
                 .entrySet()
                 .stream()
                 .sorted(comparingByValue())
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
         System.out.println("排序：" + sortedPac);
         // 找到距离自己最近的豆子
-        locationInfo resultLocationInfo = null;
+        LocationInfo resultLocationInfo = null;
         // 按照距离排序后，遍历豆子的列表，避开其他玩家选择豆子
         if (powerHigherPlayerList.size() > 1) {
-            for (Map.Entry<locationInfo, Integer> entry : sortedPac.entrySet()) {
+            for (Map.Entry<LocationInfo, Integer> entry : sortedPac.entrySet()) {
                 // 这个豆子到其他力量值比自己高的玩家的距离
-                Map<locationInfo, Integer> allPlayerDistance = CommentUtils.getAllDistance(entry.getKey(), powerHigherPlayerList);
+                Map<LocationInfo, Integer> allPlayerDistance = CommentUtils.getAllDistance(entry.getKey(), powerHigherPlayerList);
                 System.out.println("当前豆子到其他玩家的距离：" + allPlayerDistance);
-                for (Map.Entry<locationInfo, Integer> allPlayerEntry : allPlayerDistance.entrySet()) {
+                for (Map.Entry<LocationInfo, Integer> allPlayerEntry : allPlayerDistance.entrySet()) {
                     //当前豆子相比其他玩家来说，距离我最近时，结束循环。
                     if (entry.getValue() < allPlayerEntry.getValue()) {
                         resultLocationInfo = entry.getKey();
@@ -147,10 +147,10 @@ public class StrategyController {
      */
     public boolean hasBigPacChance(int[][] map) {
         // 计算自己到所有大豆子的距离
-        Map<locationInfo, Integer> allBigPacDistance = CommentUtils.getAllDistance(myLocationInfo, BigPacList);
+        Map<LocationInfo, Integer> allBigPacDistance = CommentUtils.getAllDistance(myLocationInfo, bigPacList);
         System.out.println("自己到所有大豆子的距离：" + allBigPacDistance);
         // 计算最有可能吃到的豆子的位置
-        locationInfo resultLocationInfo = getMostPossiblePacLocation(allBigPacDistance);
+        LocationInfo resultLocationInfo = getMostPossiblePacLocation(allBigPacDistance);
         //确实找到了一个豆子 相比其他玩家距离我最近时。
         if (resultLocationInfo != null) {
             System.out.println("--------------------有机会去吃大豆子--------------------");
@@ -171,10 +171,10 @@ public class StrategyController {
      * 根据场上形势，判断自己能否有去抢夺小豆子的机会
      */
     public boolean hasSmallPacChance(int[][] map) {
-        Map<locationInfo, Integer> allSmallPacDistance = CommentUtils.getAllDistance(myLocationInfo, SmallPacList);
+        Map<LocationInfo, Integer> allSmallPacDistance = CommentUtils.getAllDistance(myLocationInfo, smallPacList);
         System.out.println("自己到所有小豆子的距离：" + allSmallPacDistance);
         // 计算最有可能吃到的豆子的位置
-        locationInfo resultLocationInfo = getMostPossiblePacLocation(allSmallPacDistance);
+        LocationInfo resultLocationInfo = getMostPossiblePacLocation(allSmallPacDistance);
         //确实找到了一个豆子 相比其他玩家距离我最近时。
         if (resultLocationInfo != null) {
             System.out.println("--------------------有机会去吃小豆子--------------------");
@@ -204,7 +204,7 @@ public class StrategyController {
         // 获取地图上的其他玩家的位置
         getPlayerInformation(map);
         // 当场上存在大豆子时，进行可能性判断
-        if (BigPacList.size() > 0) {
+        if (bigPacList.size() > 0) {
             hasBigPacChanceFlg = hasBigPacChance(map);
         }
         // 当没有机会去吃大豆子时
@@ -219,8 +219,6 @@ public class StrategyController {
 
     /**
      * TODO planB
-     * 当自己能力值最高时（吃了大豆子），无须考虑场上其他玩家的位置。
-     * 直接去距离自己最近的豆子
      */
     public void planB() {
 

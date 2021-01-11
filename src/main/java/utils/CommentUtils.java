@@ -1,7 +1,7 @@
 package utils;
 
 import constant.Constants;
-import pojo.locationInfo;
+import pojo.LocationInfo;
 
 import java.util.*;
 
@@ -44,20 +44,20 @@ public class CommentUtils {
      * @param array  二维数组
      * @return X，Y轴坐标
      */
-    public static locationInfo Find(int target, int[][] array) {
+    public static LocationInfo Find(int target, int[][] array) {
         int row = array.length;//行数
         int col = array[0].length;//列数
         int i = 0;
         int j = col - 1;
         while (i < row && j >= 0) {
             if (array[i][j] == target)
-                return new locationInfo(j, i);
+                return new LocationInfo(j, i);
             else if (array[i][j] < target)
                 i++;
             else
                 j--;
         }
-        return new locationInfo(0, 0);
+        return new LocationInfo(0, 0);
     }
 
     /**
@@ -67,13 +67,13 @@ public class CommentUtils {
      * @param array  地图
      * @return 豆子的坐标列表
      */
-    public static List<locationInfo> FindPac(int target, int[][] array) {
-        List<locationInfo> locationInfoList = new ArrayList<>();
+    public static List<LocationInfo> FindPac(int target, int[][] array) {
+        List<LocationInfo> locationInfoList = new ArrayList<>();
         int row = array.length;//行数
         int col = array[0].length;//列数
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if (array[i][j] == target) locationInfoList.add(new locationInfo(j, i));
+                if (array[i][j] == target) locationInfoList.add(new LocationInfo(j, i));
             }
         }
         return locationInfoList;
@@ -85,14 +85,14 @@ public class CommentUtils {
      * @param array 地图
      * @return 所有玩家的坐标列表
      */
-    public static Map<locationInfo, Integer> FindPlayer(int[][] array) {
-        Map<locationInfo, Integer> resultMap = new HashMap<>();
+    public static Map<LocationInfo, Integer> FindPlayer(int[][] array) {
+        Map<LocationInfo, Integer> resultMap = new HashMap<>();
         int row = array.length;//行数
         int col = array[0].length;//列数
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (array[i][j] >= 0) {
-                    resultMap.put(new locationInfo(j, i), array[i][j]);
+                    resultMap.put(new LocationInfo(j, i), array[i][j]);
                 }
             }
         }
@@ -107,12 +107,12 @@ public class CommentUtils {
      * @param locationInfoList 豆子的位置列表
      * @return K：位置列表 V：距离
      */
-    public static Map<locationInfo, Integer> getAllDistance(locationInfo mylocationInfo, List<locationInfo> locationInfoList) {
-        Map<locationInfo, Integer> resultMap = new HashMap<>();
+    public static Map<LocationInfo, Integer> getAllDistance(LocationInfo mylocationInfo, List<LocationInfo> locationInfoList) {
+        Map<LocationInfo, Integer> resultMap = new HashMap<>();
         int sum = 0;
         if (locationInfoList != null) {
             // 遍历豆子的位置列表 计算每个豆子到自己的距离
-            for (locationInfo p : locationInfoList) {
+            for (LocationInfo p : locationInfoList) {
                 sum = 0;
                 sum += Math.abs(p.getX() - mylocationInfo.getX());
                 sum += Math.abs(p.getY() - mylocationInfo.getY());
@@ -129,19 +129,19 @@ public class CommentUtils {
      * @param locationInfoList 豆子的位置列表
      * @return 最近的豆子位置
      */
-    public static locationInfo FindNearestPac(locationInfo mylocationInfo, List<locationInfo> locationInfoList) {
-        locationInfo resultlocationInfo = new locationInfo(0, 0);
-        Map<locationInfo, Integer> resultMap = new HashMap<>();
+    public static LocationInfo FindNearestPac(LocationInfo mylocationInfo, List<LocationInfo> locationInfoList) {
+        LocationInfo resultlocationInfo = new LocationInfo(0, 0);
+        Map<LocationInfo, Integer> resultMap = new HashMap<>();
         int sum = 0;
         if (locationInfoList != null) {
-            for (locationInfo p : locationInfoList) {
+            for (LocationInfo p : locationInfoList) {
                 sum += Math.abs(p.getX() - mylocationInfo.getX());
                 sum += Math.abs(p.getY() - mylocationInfo.getY());
                 resultMap.put(p, sum);
                 sum = 0;
             }
             // 将HashMap按照距离排序
-            Map<locationInfo, Integer> sorted = resultMap
+            Map<LocationInfo, Integer> sorted = resultMap
                     .entrySet()
                     .stream()
                     .sorted(comparingByValue())
@@ -159,7 +159,7 @@ public class CommentUtils {
      * @param target  目标位置
      * @return 上下左右
      */
-    public static int getDirectionByLocation(locationInfo current, locationInfo target) {
+    public static int getDirectionByLocation(LocationInfo current, LocationInfo target) {
         if (current.getX() < target.getX()) {
             return Constants.LEFT;
         } else if (current.getX() > target.getX()) {

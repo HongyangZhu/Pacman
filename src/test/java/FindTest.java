@@ -3,7 +3,7 @@ import utils.CommentUtils;
 import constant.Constants;
 import pojo.MapInfo;
 import pojo.Node;
-import pojo.locationInfo;
+import pojo.LocationInfo;
 
 import java.util.List;
 
@@ -41,12 +41,12 @@ public class FindTest {
         System.out.println("-----------------------------地图-----------------------------");
         printMap(maps);
         // 我的位置
-        locationInfo myLocationInfo = new locationInfo(6, 17);
+        LocationInfo myLocationInfo = new LocationInfo(6, 17);
         // 找到所有的小豆子的位置
-        List<locationInfo> SmallPacList = CommentUtils.FindPac(Constants.SMALLPAC, maps);
+        List<LocationInfo> SmallPacList = CommentUtils.FindPac(Constants.SMALLPAC, maps);
         System.out.println("小豆子的位置：" + SmallPacList.toString());
         // 找到距离自己最近的豆子
-        locationInfo targetLocationInfo = CommentUtils.FindNearestPac(myLocationInfo, SmallPacList);
+        LocationInfo targetLocationInfo = CommentUtils.FindNearestPac(myLocationInfo, SmallPacList);
         System.out.println("最近的豆子的位置：" + targetLocationInfo);
         // 规划路线
         MapInfo info = new MapInfo(maps, maps[0].length, maps.length, new Node(myLocationInfo), new Node(targetLocationInfo));
