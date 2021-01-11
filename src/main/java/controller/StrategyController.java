@@ -144,8 +144,14 @@ public class StrategyController {
     /**
      * 能否有吃大豆子的可能性
      * 根据场上形势，判断自己能否有去抢夺大豆子的机会
+     *
+     * @param map 地图
+     * @return 移动路线
+     * 当有可能吃到大豆子时，返回行动路线
+     * 反之，返回[]
      */
-    public boolean hasBigPacChance(int[][] map) {
+    public List<Integer> hasBigPacChance(int[][] map) {
+        List<Integer> pathList = new ArrayList<>();
         // 计算自己到所有大豆子的距离
         Map<LocationInfo, Integer> allBigPacDistance = CommentUtils.getAllDistance(myLocationInfo, bigPacList);
         System.out.println("自己到所有大豆子的距离：" + allBigPacDistance);
@@ -156,21 +162,26 @@ public class StrategyController {
             System.out.println("--------------------有机会去吃大豆子--------------------");
             // 规划路线
             MapInfo info = new MapInfo(map, map[0].length, map.length, new Node(myLocationInfo), new Node(resultLocationInfo));
-            List<Integer> list = new AStar().start(info);
-            System.out.println("移动路线：" + list);
-            System.out.println("吃到大豆子需要的回合数：" + list.size());
-            return true;
+            pathList = new AStar().start(info);
+            System.out.println("移动路线：" + pathList);
+            System.out.println("吃到大豆子需要的回合数：" + pathList.size());
         } else {
             System.out.println("--------------------没有机会去吃大豆子--------------------");
-            return false;
         }
+        return pathList;
     }
 
     /**
      * 能否有吃小豆子的可能性
      * 根据场上形势，判断自己能否有去抢夺小豆子的机会
+     *
+     * @param map 地图
+     * @return 移动路线
+     * 当有可能吃到小豆子时，返回行动路线
+     * 反之，返回[]
      */
-    public boolean hasSmallPacChance(int[][] map) {
+    public List<Integer> hasSmallPacChance(int[][] map) {
+        List<Integer> pathList = new ArrayList<>();
         Map<LocationInfo, Integer> allSmallPacDistance = CommentUtils.getAllDistance(myLocationInfo, smallPacList);
         System.out.println("自己到所有小豆子的距离：" + allSmallPacDistance);
         // 计算最有可能吃到的豆子的位置
@@ -180,14 +191,13 @@ public class StrategyController {
             System.out.println("--------------------有机会去吃小豆子--------------------");
             // 规划路线
             MapInfo info = new MapInfo(map, map[0].length, map.length, new Node(myLocationInfo), new Node(resultLocationInfo));
-            List<Integer> list = new AStar().start(info);
-            System.out.println("移动路线：" + list);
-            System.out.println("吃到豆子需要的回合数：" + list.size());
-            return true;
+            pathList = new AStar().start(info);
+            System.out.println("移动路线：" + pathList);
+            System.out.println("吃到豆子需要的回合数：" + pathList.size());
         } else {
             System.out.println("--------------------没有机会去吃小豆子--------------------");
-            return false;
         }
+        return pathList;
     }
 
     /**
@@ -196,31 +206,21 @@ public class StrategyController {
      * 分别计算出最短路径
      * 选择一条最优解
      */
-    public void planA(int[][] map) {
-        boolean hasBigPacChanceFlg = false;
-        boolean hasSmallPacChanceFlg = false;
-        // 获取地图上的其他玩家的位置
+    public List<Integer> planA(int[][] map) {
+        List<Integer> pathList = new ArrayList<>();
+        // 获取地图上的豆子情报
         getPacInformation(map);
         // 获取地图上的其他玩家的位置
         getPlayerInformation(map);
         // 当场上存在大豆子时，进行可能性判断
         if (bigPacList.size() > 0) {
-            hasBigPacChanceFlg = hasBigPacChance(map);
+            pathList = hasBigPacChance(map);
         }
         // 当没有机会去吃大豆子时
-        if (!hasBigPacChanceFlg) {
-            hasSmallPacChanceFlg = hasSmallPacChance(map);
-            // TODO 当没有机会去吃小豆子时
-            if (!hasSmallPacChanceFlg) {
-
-            }
+        if (pathList.size() == 0) {
+            pathList = hasSmallPacChance(map);
         }
+        return pathList;
     }
 
-    /**
-     * TODO planB
-     */
-    public void planB() {
-
-    }
 }

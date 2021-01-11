@@ -1,5 +1,9 @@
 import constant.Constants;
+import controller.StrategyController;
 import pojo.LocationInfo;
+import utils.CommentUtils;
+
+import java.util.List;
 
 /**
  * Pacman
@@ -17,7 +21,7 @@ public class JavaPlayer {
     /**
      * 选手的初始位置
      */
-    public LocationInfo locationInfo;
+    public LocationInfo myLocationInfo;
     /**
      * 每回合执行的时间约束，单位毫秒
      */
@@ -30,7 +34,7 @@ public class JavaPlayer {
      * @throws Exception
      */
     public void ready(int position, int timeLimit) throws Exception {
-        this.locationInfo = new LocationInfo(position / 21, position % 21);
+        this.myLocationInfo = new LocationInfo(position / 21, position % 21);
         this.timeLimit = timeLimit;
     }
 
@@ -46,9 +50,42 @@ public class JavaPlayer {
      * @throws Exception
      */
     public int run(int[] board, int strength) throws Exception {
-
-        return Constants.UP;
+        // 一维转换二维地图
+        int[][] maps = CommentUtils.switchArray(board, 21, 21);
+        // 根据地图信息 选择一条最合适的路线
+        StrategyController controller = new StrategyController(myLocationInfo);
+        List<Integer> pathList = controller.planA(maps);
+        int result = pathList.size() > 0 ? pathList.get(0) : Constants.STAY;
+        System.out.println(myLocationInfo);
+        // 更新我的位置信息
+        myLocationUpdate(result);
+        System.out.println(myLocationInfo);
+        // 返回行动结果
+        return result;
     }
 
+    /**
+     * 更新我的位置信息
+     *
+     * @param actionResult 行动结果
+     */
+    private void myLocationUpdate(int actionResult) {
+        switch (actionResult) {
+            case Constants.UP:
+                myLocationInfo.setY(myLocationInfo.getY() - 1);
+                break;
+            case Constants.DOWN:
+                myLocationInfo.setY(myLocationInfo.getY() + 1);
+                break;
+            case Constants.LEFT:
+                myLocationInfo.setX(myLocationInfo.getX() - 1);
+                break;
+            case Constants.RIGHT:
+                myLocationInfo.setX(myLocationInfo.getX() + 1);
+                break;
+        }
+
+
+    }
 
 }
