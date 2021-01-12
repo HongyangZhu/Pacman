@@ -35,13 +35,13 @@ public class CommentUtils {
     }
 
     /**
-     * 寻找豆子的坐标列表
+     * 寻找目标的坐标列表
      *
-     * @param target 豆子
+     * @param target 目标的代表值
      * @param array  地图
-     * @return 豆子的坐标列表
+     * @return 目标的坐标列表
      */
-    public static List<LocationInfo> FindPac(int target, int[][] array) {
+    public static List<LocationInfo> FindTargetLocation(int target, int[][] array) {
         List<LocationInfo> locationInfoList = new ArrayList<>();
         int row = array.length;//行数
         int col = array[0].length;//列数
@@ -116,8 +116,12 @@ public class CommentUtils {
 
     /**
      * 计算两点间的距离：“曼哈顿”法，坐标分别取差值相加
+     *
+     * @param endLocation   终点
+     * @param startLocation 起点
+     * @return 两点之间距离
      */
-    private static int getDistance(LocationInfo endLocation, LocationInfo startLocation) {
+    public static int getDistance(LocationInfo endLocation, LocationInfo startLocation) {
         return Math.abs(endLocation.x - startLocation.x)
                 + Math.abs(endLocation.y - startLocation.y);
     }

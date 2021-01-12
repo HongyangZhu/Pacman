@@ -68,9 +68,9 @@ public class StrategyController {
      */
     public void getPacInformation(int[][] map) {
         // 找到所有的小豆子的位置
-        smallPacList = CommentUtils.FindPac(Constants.SMALLPAC, map);
+        smallPacList = CommentUtils.FindTargetLocation(Constants.SMALLPAC, map);
         System.out.println("所有小豆子的位置：" + smallPacList.toString());
-        bigPacList = CommentUtils.FindPac(Constants.BIGPAC, map);
+        bigPacList = CommentUtils.FindTargetLocation(Constants.BIGPAC, map);
         System.out.println("所有大豆子的位置：" + bigPacList.toString());
     }
 
