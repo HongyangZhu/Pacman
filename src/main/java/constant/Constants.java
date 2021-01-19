@@ -1,7 +1,7 @@
 package constant;
 
 /**
- * 共同定数
+ * 共通定数
  * @author zhuhy
  */
 public class Constants {

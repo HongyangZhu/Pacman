@@ -1,7 +1,7 @@
 package pojo;
 
 /**
- * ClassName: Coord
+ * ClassName: LocationInfo
  * 按照二维数组的特点，坐标原点在左上角，所以y是高，x是宽，y向下递增，x向右递增，
  *
  * @author zhuhy
