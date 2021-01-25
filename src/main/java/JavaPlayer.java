@@ -210,6 +210,7 @@ public class JavaPlayer {
  * @author zhuhy
  */
 class Constants{
+    // 1,2,3,4 分别代表左、上、右、下
     /**
      * 保持不动
      */
@@ -217,19 +218,19 @@ class Constants{
     /**
      * 上
      */
-    public static final int UP = 1;
+    public static final int UP = 2;
     /**
      * 下
      */
-    public static final int DOWN = 2;
+    public static final int DOWN = 4;
     /**
      * 左
      */
-    public static final int LEFT = 3;
+    public static final int LEFT = 1;
     /**
      * 右
      */
-    public static final int RIGHT = 4;
+    public static final int RIGHT = 3;
 
     /**
      * 鬼
