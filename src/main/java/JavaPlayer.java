@@ -446,7 +446,8 @@ class AStar {
             LocationInfo c = end.locationInfo;
             if (tmp != null) pathList.add(JavaPlayer.getDirectionByLocation(tmp, c));
             tmp = c;
-            maps[c.y][c.x] = PATH;
+            // 绘制路径
+            // maps[c.y][c.x] = PATH;
             end = end.parent;
         }
         //因为是回溯法，所以需要颠倒顺序
